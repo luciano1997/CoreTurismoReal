@@ -22,11 +22,26 @@ namespace TurismoReal.Controllers
             _departamentoContext = departamentoContext;
         }
 
-        [HttpGet]
+        [HttpGet("GetDepartamentos")]
         public ActionResult<List<DepartamentoViewModel>> GetDepartamentos()
         {
+            var deptos = _departamentoContext.selectDeptos();
 
-            var depto = _departamentoContext.selectDeptos();
+            if (deptos.Any())
+            {
+                return Ok(deptos);
+            }
+            else
+            {
+                return BadRequest(new General.Retorno() { Codigo = "er", Mensaje = "no hay departamentos disponibles"});
+            }
+            
+        }
+
+        [HttpGet("GetDepartamentoById/{id}")]
+        public ActionResult<List<DepartamentoViewModel>> GetDepartamentoById(int id)
+        {
+            var depto  = _departamentoContext.selectDeptoById(id);
 
             if (depto.id > 0)
             {
@@ -34,21 +49,14 @@ namespace TurismoReal.Controllers
             }
             else
             {
-                return BadRequest(new General.Retorno() { codigo = "er", mensaje = "no hay departamentos disponibles"});
+                return BadRequest(new General.Retorno() { Codigo = "er", Mensaje = "no hay departamentos disponibles" });
             }
-            
+
         }
-    
-        //[HttpGet("{id:int}")]
-        //public async Task<ActionResult<DepartamentoViewModel>> GetDepartamento(int id)
-        //{
-        //    throw new NotImplementedException();
-          
-            
-        //}
-    
-        [HttpPost]
-        public ActionResult Post([FromBody] DepartamentoViewModel departamento)
+
+
+        [HttpPost("PostDepartamento")]
+        public ActionResult PostDepartamento([FromBody] DepartamentoViewModel departamento)
         {
             var result = _departamentoContext.InsertDepartamento(departamento);
             
@@ -60,22 +68,42 @@ namespace TurismoReal.Controllers
             {
                 return BadRequest(new Retorno()
                 {
-                    codigo = "er",
-                    mensaje = "error al insertar"
-                });
+                    Codigo = "er",
+                    Mensaje = "error al insertar"
+                }) ;
             }
             
             
         }
-        [HttpPut]
-        public ActionResult Put([FromBody] DepartamentoViewModel departamento)
+        [HttpPut("DepartamentoById")]
+        public IActionResult PutDepartamentoById([FromBody] DepartamentoViewModel departamento)
         {
-            throw new NotImplementedException();
+            var result = _departamentoContext.UpdateDepartamentoById(departamento);
+
+            if (result > 0 )
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(new General.Retorno() { Codigo = "er", Mensaje = "No se pudo actualizar el registro" });
+            }
         }
-        [HttpDelete]
-        public ActionResult Delete()
+
+        [HttpDelete("DeleteDepartamentoById/{id}")]
+        public IActionResult DeleteDepartamentoById(int id)
         {
-            throw new NotImplementedException();
+            var result = _departamentoContext.DeleteDepartamento(id);
+
+            if (result > 0)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(new General.Retorno() { Codigo = "er", Mensaje = "error al eliminar el registro" });
+            }
+
         }
 
 

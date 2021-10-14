@@ -10,8 +10,8 @@ namespace TurismoReal.Models
 
         public class Retorno
         {
-            public string codigo { get; set; }
-            public string mensaje { get; set; }
+            public string Codigo { get; set; }
+            public string Mensaje { get; set; }
         }
     }
 }

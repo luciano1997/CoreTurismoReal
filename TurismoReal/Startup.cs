@@ -11,7 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using TurismoReal.Context.Cliente;
 using TurismoReal.Context.Departamento;
+using TurismoReal.Utilidades;
 
 namespace TurismoReal
 {
@@ -28,7 +30,11 @@ namespace TurismoReal
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivosLocales>();
+            services.AddHttpContextAccessor();
+
             services.Add(new ServiceDescriptor(typeof(DepartamentoContext), new DepartamentoContext(Configuration.GetConnectionString("DefaultConnection"))));
+            services.Add(new ServiceDescriptor(typeof(ClienteContext), new ClienteContext(Configuration.GetConnectionString("DefaultConnection"))));
             services.AddCors(options =>
             {
                 var frontendURL = Configuration.GetValue<string>("frontend_url");
@@ -62,6 +68,7 @@ namespace TurismoReal
 
             app.UseHttpsRedirection();
 
+            app.UseStaticFiles();
             app.UseRouting();
 
             app.UseCors();

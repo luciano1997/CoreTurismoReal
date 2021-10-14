@@ -15,6 +15,7 @@ namespace TurismoReal.Models
         public int cantidad_baños { get; set; }
         public string estado { get; set; }
         public string descripcion_estado { get; set; }
+
         public int region { get; set; }
         public int comuna { get; set; }
         public int vigente { get; set; }
