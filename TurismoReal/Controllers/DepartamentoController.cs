@@ -43,6 +43,8 @@ namespace TurismoReal.Controllers
         {
             var depto  = _departamentoContext.selectDeptoById(id);
 
+            //depto.imagenes = _departamentoContext.selectDepartamentoImagenes(id);
+
             if (depto.id > 0)
             {
                 return Ok(depto);

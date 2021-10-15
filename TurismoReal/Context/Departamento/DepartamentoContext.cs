@@ -32,8 +32,8 @@ namespace TurismoReal.Context.Departamento
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("SelectAllDepartmentos", conn);
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlCommand cmd = new SqlCommand("select * from departamento", conn);
+                    cmd.CommandType = CommandType.Text;
                     using (var reader = cmd.ExecuteReader())
                     {
 
@@ -43,10 +43,10 @@ namespace TurismoReal.Context.Departamento
                             {
 
                                 id = new Functions().ReaderToValue<int>(reader["id"]),
-                                direccion = new Functions().ReaderToValue<string>(reader["direccion"]),
-                                cantidad_dormitorios = new Functions().ReaderToValue<int>(reader["cantidad_dormitorios"]),
-                                cantidad_baños = new Functions().ReaderToValue<int>(reader["cantidad_baños"]),
-                                estado = new Functions().ReaderToValue<string>(reader["estado"]),
+                                cantidadDormitorios = new Functions().ReaderToValue<int>(reader["cantidad_dormitorios"]),
+                                cantidadBaños = new Functions().ReaderToValue<int>(reader["cantidad_baños"]),
+                                valorArriendo = new Functions().ReaderToValue<int>(reader["cantidad_dormitorios"]),
+                                estado = new Functions().ReaderToValue<string>(reader["disp_depto"]),
                             });
                         }
 
@@ -96,10 +96,10 @@ namespace TurismoReal.Context.Departamento
                             {
 
                                 id = new Functions().ReaderToValue<int>(reader["id"]),
-                                direccion = new Functions().ReaderToValue<string>(reader["direccion"]),
-                                cantidad_dormitorios = new Functions().ReaderToValue<int>(reader["cantidad_dormitorios"]),
-                                cantidad_baños = new Functions().ReaderToValue<int>(reader["cantidad_baños"]),
+                                cantidadDormitorios = new Functions().ReaderToValue<int>(reader["cantidad_dormitorios"]),
+                                cantidadBaños = new Functions().ReaderToValue<int>(reader["cantidad_baños"]),
                                 estado = new Functions().ReaderToValue<string>(reader["estado"]),
+                                
                             };
                         }
 
@@ -123,6 +123,61 @@ namespace TurismoReal.Context.Departamento
 
             return depto;
         }
+
+        //***** select departamento imagen ****
+
+
+        //public string[] selectDepartamentoImagenes(int id)
+        //{
+        //    string[] imagenesStr;
+        //    IList<DepartamentoImagen> imagenes = new List<DepartamentoImagen>();
+        //    try
+        //    {
+
+        //        using (SqlConnection conn = GetConnection())
+        //        {
+        //            conn.Open();
+
+        //            SqlCommand cmd = new SqlCommand("select * from departamento_imagen where id_departamento = 5", conn);
+        //            cmd.CommandType = CommandType.Text;
+        //            using (var reader = cmd.ExecuteReader())
+        //            {
+
+        //                while (reader.Read())
+        //                {
+        //                    imagenes.Add(new DepartamentoImagen()
+        //                    {
+
+        //                        id = new Functions().ReaderToValue<int>(reader["id"]),
+        //                        idDepartamento = new Functions().ReaderToValue<int>(reader["id_departamento"]),
+        //                        imagenesUrl = new Functions().ReaderToValue<string>(reader["imagenUrl"]),
+        //                    });
+        //                }
+        //                for (int i = 0; i < imagenes.Count(); i++)
+        //                {
+        //                   // imagenesStr.Append(imagenesUrl[i]);
+        //                }
+
+        //            }
+        //            conn.Close();
+
+
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        imagenes = new List<DepartamentoImagen>();
+        //        imagenes.Add(
+        //            new DepartamentoImagen()
+        //            {
+        //                retorno = new General.Retorno() { Codigo = "ex", Mensaje = e.Message.ToString() }
+        //            });
+
+        //    };
+
+        //    return imagenesStr;
+        //}
+
 
 
 
