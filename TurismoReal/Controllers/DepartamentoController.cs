@@ -25,7 +25,13 @@ namespace TurismoReal.Controllers
         [HttpGet("GetDepartamentos")]
         public ActionResult<List<DepartamentoViewModel>> GetDepartamentos()
         {
-            var deptos = _departamentoContext.selectDeptos();
+            IList<DepartamentoViewModel> deptos = new List<DepartamentoViewModel>();
+            deptos = _departamentoContext.selectDeptos();
+
+            foreach (var item in deptos)
+            {
+                item.imagenes = _departamentoContext.selectDepartamentoImagenes(item.id);
+            }
 
             if (deptos.Any())
             {
@@ -41,9 +47,11 @@ namespace TurismoReal.Controllers
         [HttpGet("GetDepartamentoById/{id}")]
         public ActionResult<List<DepartamentoViewModel>> GetDepartamentoById(int id)
         {
-            var depto  = _departamentoContext.selectDeptoById(id);
+            DepartamentoViewModel depto = new DepartamentoViewModel();
+            
+            depto  = _departamentoContext.selectDeptoById(id);
 
-            //depto.imagenes = _departamentoContext.selectDepartamentoImagenes(id);
+            depto.imagenes = _departamentoContext.selectDepartamentoImagenes(id);
 
             if (depto.id > 0)
             {
@@ -76,6 +84,27 @@ namespace TurismoReal.Controllers
             }
             
             
+        }
+
+        [HttpPost("PostDepartamentoImagen")]
+        public ActionResult PostDepartamentoImagen([FromBody] DepartamentoImagen departamento)
+        {
+            var result = _departamentoContext.InsertDepartamentoImagen(departamento.idDepartamento, departamento.imagenesUrl);
+
+            if (result > 0)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(new Retorno()
+                {
+                    Codigo = "er",
+                    Mensaje = "error al insertar"
+                });
+            }
+
+
         }
         [HttpPut("DepartamentoById")]
         public IActionResult PutDepartamentoById([FromBody] DepartamentoViewModel departamento)

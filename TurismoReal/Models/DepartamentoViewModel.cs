@@ -16,7 +16,12 @@ namespace TurismoReal.Models
         public int valorArriendo { get; set; }
         public string estado { get; set; }
         public string descripcionEstado { get; set; }
-        public string[] imagenes { get; set; }
+        public string nombreCalle { get; set; }
+        public int numeroCalle { get; set; }
+        public int numeroDepartamento { get; set; }
+        public string Comuna { get; set; }
+        public string Region { get; set; }
+        public IList<string> imagenes { get; set; }
        
         public int vigente { get; set; }
         

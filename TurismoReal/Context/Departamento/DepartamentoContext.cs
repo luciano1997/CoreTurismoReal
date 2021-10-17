@@ -32,7 +32,10 @@ namespace TurismoReal.Context.Departamento
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("select * from departamento", conn);
+                    SqlCommand cmd = new SqlCommand("select dep.*, dir.nombre_calle, dir.numero_calle, dir.numero_depto, c.nombre_comuna, r.nombre_region from departamento dep" +
+                                                    " inner join direccion dir on dep.id = dir.departamento_id" +
+                                                    " inner join comuna c on c.id = dir.comuna_id" +
+                                                    " inner join region r on r.id = c.region_id", conn);
                     cmd.CommandType = CommandType.Text;
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -45,7 +48,12 @@ namespace TurismoReal.Context.Departamento
                                 id = new Functions().ReaderToValue<int>(reader["id"]),
                                 cantidadDormitorios = new Functions().ReaderToValue<int>(reader["cantidad_dormitorios"]),
                                 cantidadBaños = new Functions().ReaderToValue<int>(reader["cantidad_baños"]),
-                                valorArriendo = new Functions().ReaderToValue<int>(reader["cantidad_dormitorios"]),
+                                nombreCalle = new Functions().ReaderToValue<string>(reader["nombre_calle"]),
+                                numeroCalle = new Functions().ReaderToValue<int>(reader["numero_calle"]),
+                                numeroDepartamento = new Functions().ReaderToValue<int>(reader["numero_calle"]),
+                                Comuna = new Functions().ReaderToValue<string>(reader["nombre_comuna"]),
+                                Region = new Functions().ReaderToValue<string>(reader["nombre_region"]),
+                                valorArriendo = new Functions().ReaderToValue<int>(reader["valor_arriendo"]),
                                 estado = new Functions().ReaderToValue<string>(reader["disp_depto"]),
                             });
                         }
@@ -84,7 +92,10 @@ namespace TurismoReal.Context.Departamento
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("SelectDepartamentoById", conn);
+                    SqlCommand cmd = new SqlCommand("select dep.*, dir.nombre_calle, dir.numero_calle, dir.numero_depto, c.nombre_comuna, r.nombre_region from departamento dep" + 
+                                                    " inner join direccion dir on dep.id = dir.departamento_id" +
+                                                    " inner join comuna c on c.id = dir.comuna_id"+
+                                                    " inner join region r on r.id = c.region_id where dep.id = @id; ", conn);
                     cmd.Parameters.AddWithValue("@id", id);
                     cmd.CommandType = CommandType.StoredProcedure;
                     using (var reader = cmd.ExecuteReader())
@@ -98,8 +109,14 @@ namespace TurismoReal.Context.Departamento
                                 id = new Functions().ReaderToValue<int>(reader["id"]),
                                 cantidadDormitorios = new Functions().ReaderToValue<int>(reader["cantidad_dormitorios"]),
                                 cantidadBaños = new Functions().ReaderToValue<int>(reader["cantidad_baños"]),
-                                estado = new Functions().ReaderToValue<string>(reader["estado"]),
-                                
+                                nombreCalle = new Functions().ReaderToValue<string>(reader["nombre_calle"]),
+                                numeroCalle = new Functions().ReaderToValue<int>(reader["numero_calle"]),
+                                numeroDepartamento = new Functions().ReaderToValue<int>(reader["numero_calle"]),
+                                Comuna = new Functions().ReaderToValue<string>(reader["nombre_comuna"]),
+                                Region = new Functions().ReaderToValue<string>(reader["nombre_region"]),
+                                valorArriendo = new Functions().ReaderToValue<int>(reader["valor_arriendo"]),
+                                estado = new Functions().ReaderToValue<string>(reader["disp_depto"]),
+
                             };
                         }
 
@@ -127,56 +144,47 @@ namespace TurismoReal.Context.Departamento
         //***** select departamento imagen ****
 
 
-        //public string[] selectDepartamentoImagenes(int id)
-        //{
-        //    string[] imagenesStr;
-        //    IList<DepartamentoImagen> imagenes = new List<DepartamentoImagen>();
-        //    try
-        //    {
+        public IList<string> selectDepartamentoImagenes(int id)
+        {
+           
+            IList<string> imagenes = new List<string>();
+            try
+            {
 
-        //        using (SqlConnection conn = GetConnection())
-        //        {
-        //            conn.Open();
+                using (SqlConnection conn = GetConnection())
+                {
+                    conn.Open();
 
-        //            SqlCommand cmd = new SqlCommand("select * from departamento_imagen where id_departamento = 5", conn);
-        //            cmd.CommandType = CommandType.Text;
-        //            using (var reader = cmd.ExecuteReader())
-        //            {
+                    SqlCommand cmd = new SqlCommand("select * from departamento_imagen where departamento_id = @id", conn);
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@id", id);
+                    using (var reader = cmd.ExecuteReader())
+                    {
 
-        //                while (reader.Read())
-        //                {
-        //                    imagenes.Add(new DepartamentoImagen()
-        //                    {
+                        while (reader.Read())
+                        {
+                            imagenes.Add( new Functions().ReaderToValue<string>(reader["imagenUrl"]) );
+                        }
+                        
 
-        //                        id = new Functions().ReaderToValue<int>(reader["id"]),
-        //                        idDepartamento = new Functions().ReaderToValue<int>(reader["id_departamento"]),
-        //                        imagenesUrl = new Functions().ReaderToValue<string>(reader["imagenUrl"]),
-        //                    });
-        //                }
-        //                for (int i = 0; i < imagenes.Count(); i++)
-        //                {
-        //                   // imagenesStr.Append(imagenesUrl[i]);
-        //                }
+                    }
+                    conn.Close();
 
-        //            }
-        //            conn.Close();
+                    if (!imagenes.Any())
+                    {
+                        imagenes.Add("https://a0.muscache.com/im/pictures/2f4ab621-7e4f-40ed-a3a6-e07a2c5f35bf.jpg?im_w=1200");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                
+                return imagenes;
 
+            };
 
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        imagenes = new List<DepartamentoImagen>();
-        //        imagenes.Add(
-        //            new DepartamentoImagen()
-        //            {
-        //                retorno = new General.Retorno() { Codigo = "ex", Mensaje = e.Message.ToString() }
-        //            });
-
-        //    };
-
-        //    return imagenesStr;
-        //}
+            return imagenes;
+        }
 
 
 
@@ -189,6 +197,36 @@ namespace TurismoReal.Context.Departamento
         #endregion
 
         #region insert
+        public int InsertDepartamentoImagen(int id, string imagenUrl)
+        {
+            int retorno = 0;
+
+            try
+            {
+                using (SqlConnection conn = GetConnection())
+                {
+
+
+                    SqlCommand cmd = new SqlCommand("insert into departamento_imagen (departamento_id, imagenUrl) values (@departamento_id, @imagenUrl);", conn);
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@departamento_id", id);
+                    cmd.Parameters.AddWithValue("@imagenUrl", imagenUrl);
+                 
+                    conn.Open();
+                    retorno = cmd.ExecuteNonQuery();
+                    conn.Close();
+
+                   
+                }
+            }
+            catch (Exception e)
+            {
+
+                retorno = 0;
+                
+            }
+            return retorno;
+        }
 
         public int InsertDepartamento(DepartamentoViewModel depto)
         {
@@ -200,9 +238,11 @@ namespace TurismoReal.Context.Departamento
                 {
                     
 
-                    SqlCommand cmd = new SqlCommand("spInsertDepartamento", conn);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("a", depto.estado);
+                    SqlCommand cmd = new SqlCommand("insert into departamento (cantidad_dormitorios, cantidad_baños, valor_arriedo) values (@dormitorios, @baños, @valor);", conn);
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@dormitorios", depto.estado);
+                    cmd.Parameters.AddWithValue("@baños", depto.estado);
+                    cmd.Parameters.AddWithValue("@valor", depto.estado);
                     conn.Open();
                     retorno = cmd.ExecuteNonQuery();
                     conn.Close();
