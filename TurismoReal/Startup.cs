@@ -11,8 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using TurismoReal.Context.Cliente;
+
 using TurismoReal.Context.Departamento;
+using TurismoReal.Context.Direccion;
+using TurismoReal.Context.Usuario;
 using TurismoReal.Utilidades;
 
 namespace TurismoReal
@@ -34,7 +36,8 @@ namespace TurismoReal
             services.AddHttpContextAccessor();
 
             services.Add(new ServiceDescriptor(typeof(DepartamentoContext), new DepartamentoContext(Configuration.GetConnectionString("DefaultConnection"))));
-            services.Add(new ServiceDescriptor(typeof(ClienteContext), new ClienteContext(Configuration.GetConnectionString("DefaultConnection"))));
+            services.Add(new ServiceDescriptor(typeof(UsuarioContext), new UsuarioContext(Configuration.GetConnectionString("DefaultConnection"))));
+            services.Add(new ServiceDescriptor(typeof(DireccionContext), new DireccionContext(Configuration.GetConnectionString("DefaultConnection"))));
             services.AddCors(options =>
             {
                 var frontendURL = Configuration.GetValue<string>("frontend_url");

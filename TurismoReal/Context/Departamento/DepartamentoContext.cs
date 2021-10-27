@@ -47,7 +47,7 @@ namespace TurismoReal.Context.Departamento
 
                                 id = new Functions().ReaderToValue<int>(reader["id"]),
                                 cantidadDormitorios = new Functions().ReaderToValue<int>(reader["cantidad_dormitorios"]),
-                                cantidadBaños = new Functions().ReaderToValue<int>(reader["cantidad_baños"]),
+                                cantidadBaños = new Functions().ReaderToValue<int>(reader["cantidad_banos"]),
                                 nombreCalle = new Functions().ReaderToValue<string>(reader["nombre_calle"]),
                                 numeroCalle = new Functions().ReaderToValue<int>(reader["numero_calle"]),
                                 numeroDepartamento = new Functions().ReaderToValue<int>(reader["numero_calle"]),
@@ -55,6 +55,7 @@ namespace TurismoReal.Context.Departamento
                                 Region = new Functions().ReaderToValue<string>(reader["nombre_region"]),
                                 valorArriendo = new Functions().ReaderToValue<int>(reader["valor_arriendo"]),
                                 estado = new Functions().ReaderToValue<string>(reader["disp_depto"]),
+                                descripcion = new Functions().ReaderToValue<string>(reader["descripcion"])
                             });
                         }
 
@@ -97,7 +98,7 @@ namespace TurismoReal.Context.Departamento
                                                     " inner join comuna c on c.id = dir.comuna_id"+
                                                     " inner join region r on r.id = c.region_id where dep.id = @id; ", conn);
                     cmd.Parameters.AddWithValue("@id", id);
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.Text;
                     using (var reader = cmd.ExecuteReader())
                     {
 
@@ -108,14 +109,15 @@ namespace TurismoReal.Context.Departamento
 
                                 id = new Functions().ReaderToValue<int>(reader["id"]),
                                 cantidadDormitorios = new Functions().ReaderToValue<int>(reader["cantidad_dormitorios"]),
-                                cantidadBaños = new Functions().ReaderToValue<int>(reader["cantidad_baños"]),
+                                cantidadBaños = new Functions().ReaderToValue<int>(reader["cantidad_banos"]),
                                 nombreCalle = new Functions().ReaderToValue<string>(reader["nombre_calle"]),
                                 numeroCalle = new Functions().ReaderToValue<int>(reader["numero_calle"]),
-                                numeroDepartamento = new Functions().ReaderToValue<int>(reader["numero_calle"]),
+                                numeroDepartamento = new Functions().ReaderToValue<int>(reader["numero_depto"]),
                                 Comuna = new Functions().ReaderToValue<string>(reader["nombre_comuna"]),
                                 Region = new Functions().ReaderToValue<string>(reader["nombre_region"]),
                                 valorArriendo = new Functions().ReaderToValue<int>(reader["valor_arriendo"]),
                                 estado = new Functions().ReaderToValue<string>(reader["disp_depto"]),
+                                descripcion = new Functions().ReaderToValue<string>(reader["descripcion"])
 
                             };
                         }
@@ -133,7 +135,7 @@ namespace TurismoReal.Context.Departamento
 
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 depto = null;
             };
@@ -144,7 +146,7 @@ namespace TurismoReal.Context.Departamento
         //***** select departamento imagen ****
 
 
-        public IList<string> selectDepartamentoImagenes(int id)
+        public IList<string> selectDepartamentoImagenesById(int id)
         {
            
             IList<string> imagenes = new List<string>();
@@ -197,7 +199,7 @@ namespace TurismoReal.Context.Departamento
         #endregion
 
         #region insert
-        public int InsertDepartamentoImagen(int id, string imagenUrl)
+        public int InsertDepartamentoImagenesById(int id, string imagenUrl)
         {
             int retorno = 0;
 
@@ -238,11 +240,13 @@ namespace TurismoReal.Context.Departamento
                 {
                     
 
-                    SqlCommand cmd = new SqlCommand("insert into departamento (cantidad_dormitorios, cantidad_baños, valor_arriedo) values (@dormitorios, @baños, @valor);", conn);
+                    SqlCommand cmd = new SqlCommand("insert into departamento (cantidad_dormitorios, cantidad_banos, valor_arriendo, disp_depto, descripcion) values (@dormitorios, @banos, @valor, @disp_depto, @descripcion);", conn);
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@dormitorios", depto.estado);
-                    cmd.Parameters.AddWithValue("@baños", depto.estado);
-                    cmd.Parameters.AddWithValue("@valor", depto.estado);
+                    cmd.Parameters.AddWithValue("@banos", depto.cantidadBaños);
+                    cmd.Parameters.AddWithValue("@valor", depto.valorArriendo);
+                    cmd.Parameters.AddWithValue("@disp_depto", depto.estado);
+                    cmd.Parameters.AddWithValue("@descripcion", depto.descripcion);
                     conn.Open();
                     retorno = cmd.ExecuteNonQuery();
                     conn.Close();

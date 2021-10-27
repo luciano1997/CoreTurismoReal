@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TurismoReal.Context.Departamento;
+using TurismoReal.Context.Direccion;
 using TurismoReal.Models;
 using static TurismoReal.Models.General;
 
@@ -16,10 +17,12 @@ namespace TurismoReal.Controllers
     public class DepartamentoController : ControllerBase
     {
         private readonly DepartamentoContext _departamentoContext;
+        private readonly DireccionContext _direccionContext;
 
-        public DepartamentoController(DepartamentoContext departamentoContext)
+        public DepartamentoController(DepartamentoContext departamentoContext, DireccionContext direccionContext)
         {
             _departamentoContext = departamentoContext;
+            _direccionContext = direccionContext;
         }
 
         [HttpGet("GetDepartamentos")]
@@ -30,7 +33,8 @@ namespace TurismoReal.Controllers
 
             foreach (var item in deptos)
             {
-                item.imagenes = _departamentoContext.selectDepartamentoImagenes(item.id);
+                item.imagenes = _departamentoContext.selectDepartamentoImagenesById(item.id);
+                item.direccion = _direccionContext.selectDireccionById(item.id);
             }
 
             if (deptos.Any())
@@ -51,7 +55,8 @@ namespace TurismoReal.Controllers
             
             depto  = _departamentoContext.selectDeptoById(id);
 
-            depto.imagenes = _departamentoContext.selectDepartamentoImagenes(id);
+            depto.imagenes = _departamentoContext.selectDepartamentoImagenesById(id);
+            depto.direccion = _direccionContext.selectDireccionById(id);
 
             if (depto.id > 0)
             {
@@ -69,8 +74,17 @@ namespace TurismoReal.Controllers
         public ActionResult PostDepartamento([FromBody] DepartamentoViewModel departamento)
         {
             var result = _departamentoContext.InsertDepartamento(departamento);
+            _direccionContext.InsertDireccion(departamento);
+            if (departamento.imagenes.Any())
+            {
+                foreach (var item in departamento.imagenes)
+                {
+                   _departamentoContext.InsertDepartamentoImagenesById(departamento.id, item);
+                   
+                }
+            }
             
-            if (result >0)
+           if (result >0)
             {
                 return Ok(result);
             }
@@ -89,7 +103,7 @@ namespace TurismoReal.Controllers
         [HttpPost("PostDepartamentoImagen")]
         public ActionResult PostDepartamentoImagen([FromBody] DepartamentoImagen departamento)
         {
-            var result = _departamentoContext.InsertDepartamentoImagen(departamento.idDepartamento, departamento.imagenesUrl);
+            var result = _departamentoContext.InsertDepartamentoImagenesById(departamento.idDepartamento, departamento.imagenesUrl);
 
             if (result > 0)
             {
