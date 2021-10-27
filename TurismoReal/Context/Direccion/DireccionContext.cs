@@ -33,7 +33,9 @@ namespace TurismoReal.Context.Direccion
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("select * from direccion where departamento_id = @id", conn);
+                    SqlCommand cmd = new SqlCommand("select direccion.*, comuna.nombre_comuna from direccion " +
+                                                    "inner join comuna on direccion.comuna_id = comuna.id " +
+                                                    "where direccion.departamento_id = @id; ", conn);
                     cmd.Parameters.AddWithValue("@id", id);
                     cmd.CommandType = CommandType.Text;
                     using (var reader = cmd.ExecuteReader())
@@ -50,7 +52,7 @@ namespace TurismoReal.Context.Direccion
                                 NumeroDepto = new Functions().ReaderToValue<string>(reader["numero_depto"]),
                                 DepartamentoId = new Functions().ReaderToValue<int>(reader["departamento_id"]),
                                 ComunaId = new Functions().ReaderToValue<int>(reader["comuna_id"]),
-                                
+                                ComunaNombre = new Functions().ReaderToValue<string>(reader["nombre_comuna"])
 
                             };
                         }
@@ -104,7 +106,7 @@ namespace TurismoReal.Context.Direccion
                         }    
                     }
                     conn.Close();
-                    SqlCommand cmd = new SqlCommand("insert into direccion (nombre_calle, numero_calle, numero_depto, departamento_id, comuna_id) values (@nombre_calle, @numero_calle, @departamento_id, @comuna_id);", conn);
+                    SqlCommand cmd = new SqlCommand("insert into direccion (nombre_calle, numero_calle, numero_depto, departamento_id, comuna_id) values (@nombre_calle, @numero_calle, @numero_depto, @departamento_id, @comuna_id);", conn);
                     
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@nombre_calle", depto.direccion.NombreCalle);
