@@ -8,6 +8,13 @@ namespace TurismoReal.Class
     public class Functions
     {
 
+
+        public static DateTime GetHoraOficial()
+        {
+            //return DateTime.Now.AddHours(3);
+            return DateTime.Now;
+        }
+
         public T ReaderToValue<T>(object o)
         {
             object value = null;

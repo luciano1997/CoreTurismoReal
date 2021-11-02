@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,6 @@ using static TurismoReal.Models.General;
 
 namespace TurismoReal.Controllers
 {
-
     [Route("api/[controller]")]
     [ApiController]
     public class DepartamentoController : ControllerBase
@@ -24,7 +24,7 @@ namespace TurismoReal.Controllers
             _departamentoContext = departamentoContext;
             _direccionContext = direccionContext;
         }
-
+        
         [HttpGet("GetDepartamentos")]
         public ActionResult<List<DepartamentoViewModel>> GetDepartamentos()
         {

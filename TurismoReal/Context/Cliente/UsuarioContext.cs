@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TurismoReal.Class;
 using TurismoReal.Models;
 using System.Net.Mail;
+using System.Security.Cryptography;
 
 namespace TurismoReal.Context.Usuario
 {
@@ -77,7 +78,7 @@ namespace TurismoReal.Context.Usuario
 
         #region ValidarUsuario
 
-        public UsuarioViewModel ValidarUsuario(string correo,string password )
+        public int ValidarUsuario(string correo,string password )
         {
 
             UsuarioViewModel usuario = new UsuarioViewModel();
@@ -101,14 +102,14 @@ namespace TurismoReal.Context.Usuario
                             {
 
                                 id = new Functions().ReaderToValue<int>(reader["id"]),
-                                nombres = new Functions().ReaderToValue<string>(reader["nombres"]),
-                                apellidoPaterno = new Functions().ReaderToValue<string>(reader["apellido_paterno"]),
-                                apellidoMaterno = new Functions().ReaderToValue<string>(reader["apellido_materno"]),
-                                telefono = new Functions().ReaderToValue<int>(reader["telefono"]),
-                                rut = new Functions().ReaderToValue<string>(reader["rut"]),
-                                correo = new Functions().ReaderToValue<string>(reader["correo"]),
-                                tipoUsuario = new Functions().ReaderToValue<string>(reader["tipo_usuario"]),
-                               // password = new Functions().ReaderToValue<string>(reader["password"]),
+                               // nombres = new Functions().ReaderToValue<string>(reader["nombres"]),
+                               // apellidoPaterno = new Functions().ReaderToValue<string>(reader["apellido_paterno"]),
+                               // apellidoMaterno = new Functions().ReaderToValue<string>(reader["apellido_materno"]),
+                               // telefono = new Functions().ReaderToValue<int>(reader["telefono"]),
+                               // rut = new Functions().ReaderToValue<string>(reader["rut"]),
+                               // correo = new Functions().ReaderToValue<string>(reader["correo"]),
+                               // tipoUsuario = new Functions().ReaderToValue<string>(reader["tipo_usuario"]),
+                               //// password = new Functions().ReaderToValue<string>(reader["password"]),
 
                             };
                         }
@@ -126,10 +127,39 @@ namespace TurismoReal.Context.Usuario
 
             };
 
-            return usuario;
+            return usuario.id;
         }
 
         #endregion
+
+        // insert usuario
+        public int InsertPassword(int IdUsuario, string Password)
+        {
+            int retorno = 0;
+
+            using (SqlConnection conn = GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand("spInsertPassword", conn);
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("UserId", IdUsuario);
+                using (MD5 md5Hash = MD5.Create())
+                {
+                    string hashPass = Class.StringCipher.GetFtrMd5Hash(md5Hash, Password);
+                    cmd.Parameters.AddWithValue("Nombre", hashPass);
+                }
+                cmd.Parameters.AddWithValue("Fecha", Functions.GetHoraOficial());
+                cmd.Parameters.AddWithValue("Vigente", true);
+
+                
+
+                conn.Open();
+                
+                retorno = cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+            return retorno;
+        }
 
 
 

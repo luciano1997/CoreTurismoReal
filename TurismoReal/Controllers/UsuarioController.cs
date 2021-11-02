@@ -36,17 +36,17 @@ namespace TurismoReal.Controllers
 
         }
         [HttpGet("ValidarUsuario/{correo}/{password}")]
-        public ActionResult<UsuarioViewModel> ValidarUsuario(string correo, string password)
+        public int ValidarUsuario(string correo, string password)
         {
             var usuario = _usuarioContext.ValidarUsuario(correo, password);
 
-            if (usuario.id > 0)
+            if (usuario > 0)
             {
-                return Ok(usuario);
+                return usuario;
             }
             else
             {
-                return BadRequest(new General.Retorno() { Codigo = "er", Mensaje = "usuario o contraseña incorrectos" });
+                return 0;
             }
 
         }
