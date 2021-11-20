@@ -322,45 +322,45 @@ namespace TurismoReal.Context.Departamento
             return retorno;
         }
 
-        //public int UpdateDepartamentoEstadoById(DepartamentoViewModel depto)
-        //{
-        //    int retorno = 0;
-        //    try
-        //    {
+        public int UpdateDepartamentoEstadoById(DepartamentoViewModel depto)
+        {
+            int retorno = 0;
+            try
+            {
 
-        //        using (SqlConnection conn = GetConnection())
-        //        {
-
-
-        //            SqlCommand cmd = new SqlCommand("spInsertDepartamento");
-        //            cmd.CommandType = CommandType.StoredProcedure;
-        //            cmd.Parameters.AddWithValue("id", depto.estado);
-        //            cmd.Parameters.AddWithValue("estado", depto.estado);
-        //            conn.Open();
-        //            retorno = cmd.ExecuteNonQuery();
-        //            conn.Close();
-
-        //            if (retorno.Equals(1))
-        //            {
-        //                depto.retorno = new General.Retorno() { Codigo = "ok", Mensaje = "registro almacenado con exito" };
-        //            }
-        //            else
-        //            {
-        //                depto.retorno = new General.Retorno() { Codigo = "er", Mensaje = "Ha ocurrido un error al almacenar el registro" };
-        //            }
+                using (SqlConnection conn = GetConnection())
+                {
 
 
+                    SqlCommand cmd = new SqlCommand("update departamento set disp_depto=@estado where id= @id;", conn);
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@id", depto.id);
+                    cmd.Parameters.AddWithValue("@estado", depto.estado);
+                    conn.Open();
+                    retorno = cmd.ExecuteNonQuery();
+                    conn.Close();
 
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
+                    if (retorno.Equals(1))
+                    {
+                        depto.retorno = new General.Retorno() { Codigo = "ok", Mensaje = "registro Actualizado con exito" };
+                    }
+                    else
+                    {
+                        depto.retorno = new General.Retorno() { Codigo = "er", Mensaje = "Ha ocurrido un error al Actualizado el registro" };
+                    }
 
-        //        retorno = 0;
-        //        depto.retorno = new General.Retorno() { Codigo = "ex", Mensaje = e.Message.ToString() };
-        //    }
-        //    return retorno;
-        //}
+
+
+                }
+            }
+            catch (Exception e)
+            {
+
+                retorno = 0;
+                depto.retorno = new General.Retorno() { Codigo = "ex", Mensaje = e.Message.ToString() };
+            }
+            return retorno;
+        }
 
 
         #endregion

@@ -14,7 +14,7 @@ namespace TurismoReal.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class DepartamentoController : ControllerBase
     {
         private readonly DepartamentoContext _departamentoContext;
@@ -121,12 +121,26 @@ namespace TurismoReal.Controllers
 
 
         }
-        [HttpPut("DepartamentoById")]
+        [HttpPut("PutDepartamentoById")]
         public IActionResult PutDepartamentoById([FromBody] DepartamentoViewModel departamento)
         {
             var result = _departamentoContext.UpdateDepartamentoById(departamento);
 
             if (result > 0 )
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(new General.Retorno() { Codigo = "er", Mensaje = "No se pudo actualizar el registro" });
+            }
+        }
+        [HttpPut("PutDepartamentoEstadoById")]
+        public IActionResult PutDepartamentoEstadoById([FromBody] DepartamentoViewModel departamento)
+        {
+            var result = _departamentoContext.UpdateDepartamentoEstadoById(departamento);
+
+            if (result > 0)
             {
                 return Ok(result);
             }
