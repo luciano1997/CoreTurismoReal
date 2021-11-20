@@ -20,6 +20,8 @@ namespace TurismoReal.Models
         public int numeroCalle { get; set; }
         public int numeroDepartamento { get; set; }
         public string Comuna { get; set; }
+        public int ComunaId { get; set; }
+        public int DepartamentoId { get; set; }
         public string Region { get; set; }
         public IList<string> imagenes { get; set; }
         public DireccionViewModel direccion { get; set; }

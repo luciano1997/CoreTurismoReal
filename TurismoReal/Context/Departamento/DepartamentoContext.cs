@@ -285,9 +285,17 @@ namespace TurismoReal.Context.Departamento
                 {
 
 
-                    SqlCommand cmd = new SqlCommand("spInsertDepartamento");
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("id", depto.estado);
+                    SqlCommand cmd = new SqlCommand("update departamento set " +
+                        " cantidad_dormitorios = @cantidadDormitorios , cantidad_banos = @cantidadBaños, " +
+                        " valor_arriendo = @valorArriendo, disp_depto=@estado,  descripcion = @descripcion where id= @id;", conn);
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@id", depto.estado);
+                    cmd.Parameters.AddWithValue("@cantidadDormitorios", depto.cantidadDormitorios);
+                    cmd.Parameters.AddWithValue("@cantidadBaños ", depto.cantidadBaños);
+                    cmd.Parameters.AddWithValue("@valorArriendo", depto.valorArriendo);
+                    cmd.Parameters.AddWithValue("@estado", depto.estado);
+                    cmd.Parameters.AddWithValue("@descripcion", depto.descripcion);
+                    
                     conn.Open();
                     retorno = cmd.ExecuteNonQuery();
                     conn.Close();
@@ -314,7 +322,53 @@ namespace TurismoReal.Context.Departamento
             return retorno;
         }
 
-        public int UpdateDepartamentoEstadoById(DepartamentoViewModel depto)
+        //public int UpdateDepartamentoEstadoById(DepartamentoViewModel depto)
+        //{
+        //    int retorno = 0;
+        //    try
+        //    {
+
+        //        using (SqlConnection conn = GetConnection())
+        //        {
+
+
+        //            SqlCommand cmd = new SqlCommand("spInsertDepartamento");
+        //            cmd.CommandType = CommandType.StoredProcedure;
+        //            cmd.Parameters.AddWithValue("id", depto.estado);
+        //            cmd.Parameters.AddWithValue("estado", depto.estado);
+        //            conn.Open();
+        //            retorno = cmd.ExecuteNonQuery();
+        //            conn.Close();
+
+        //            if (retorno.Equals(1))
+        //            {
+        //                depto.retorno = new General.Retorno() { Codigo = "ok", Mensaje = "registro almacenado con exito" };
+        //            }
+        //            else
+        //            {
+        //                depto.retorno = new General.Retorno() { Codigo = "er", Mensaje = "Ha ocurrido un error al almacenar el registro" };
+        //            }
+
+
+
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+
+        //        retorno = 0;
+        //        depto.retorno = new General.Retorno() { Codigo = "ex", Mensaje = e.Message.ToString() };
+        //    }
+        //    return retorno;
+        //}
+
+
+        #endregion
+
+        #region Delete
+
+
+        public int DeleteDepartamentoById(int id)
         {
             int retorno = 0;
             try
@@ -324,22 +378,15 @@ namespace TurismoReal.Context.Departamento
                 {
 
 
-                    SqlCommand cmd = new SqlCommand("spInsertDepartamento");
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("id", depto.estado);
-                    cmd.Parameters.AddWithValue("estado", depto.estado);
+                    SqlCommand cmd = new SqlCommand("delete from departamento where id =@id;", conn);
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@id", id);
+
                     conn.Open();
                     retorno = cmd.ExecuteNonQuery();
                     conn.Close();
 
-                    if (retorno.Equals(1))
-                    {
-                        depto.retorno = new General.Retorno() { Codigo = "ok", Mensaje = "registro almacenado con exito" };
-                    }
-                    else
-                    {
-                        depto.retorno = new General.Retorno() { Codigo = "er", Mensaje = "Ha ocurrido un error al almacenar el registro" };
-                    }
+                  
 
 
 
@@ -349,41 +396,35 @@ namespace TurismoReal.Context.Departamento
             {
 
                 retorno = 0;
-                depto.retorno = new General.Retorno() { Codigo = "ex", Mensaje = e.Message.ToString() };
             }
             return retorno;
         }
 
+        //public int DeleteDepartamento(int id)
+        //{
+        //    int retorno = 0;
+        //    try
+        //    {
+        //        using (SqlConnection conn = new SqlConnection())
+        //        {
+        //            SqlCommand cmd = new SqlCommand("delete from departamento where id = @id", conn);
+        //            cmd.CommandType = CommandType.Text;
+        //            cmd.Parameters.AddWithValue("@id", id);
+        //            conn.Open();
+        //            cmd.ExecuteNonQuery();
+        //            conn.Close();
 
-        #endregion
 
-        #region Delete
+        //        }
+        //    }
+        //    catch (Exception e )
+        //    {
 
-        public int DeleteDepartamento(int id)
-        {
-            int retorno = 0;
-            try
-            {
-                using (SqlConnection conn = new SqlConnection())
-                {
-                    SqlCommand cmd = new SqlCommand("spDeleteDepartamento", conn);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("id", id);
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                    retorno = 1;
+        //        retorno = 0;
+        //    }
 
-                }
-            }
-            catch (Exception)
-            {
-
-                retorno = 0;
-            }
-
-            return retorno;
-        }
+        //    return retorno;
+        //}
 
         #endregion
 

@@ -90,30 +90,34 @@ namespace TurismoReal.Context.Direccion
 
             try
             {
-                using (SqlConnection conn = GetConnection())
+                using (SqlConnection conn1 = GetConnection())
                 {
 
 
-                    SqlCommand cmd1 = new SqlCommand("select max(id) as id from departamento;", conn);
+                    SqlCommand cmd1 = new SqlCommand("select max(id) as id from departamento;", conn1);
                     cmd1.CommandType = CommandType.Text;
-                    conn.Open();
+                    conn1.Open();
                     using (var reader = cmd1.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            depto.direccion.DepartamentoId = new Functions().ReaderToValue<int>(reader["id"]);
+                            depto.DepartamentoId = new Functions().ReaderToValue<int>(reader["id"]);
 
                         }    
                     }
-                    conn.Close();
+                    conn1.Close();
+                }
+
+                using (SqlConnection conn = GetConnection())
+                {
                     SqlCommand cmd = new SqlCommand("insert into direccion (nombre_calle, numero_calle, numero_depto, departamento_id, comuna_id) values (@nombre_calle, @numero_calle, @numero_depto, @departamento_id, @comuna_id);", conn);
-                    
+
                     cmd.CommandType = CommandType.Text;
-                    cmd.Parameters.AddWithValue("@nombre_calle", depto.direccion.NombreCalle);
-                    cmd.Parameters.AddWithValue("@numero_calle", depto.direccion.NumeroCalle);
-                    cmd.Parameters.AddWithValue("@numero_depto", depto.direccion.NumeroDepto);
-                    cmd.Parameters.AddWithValue("@departamento_id",depto.direccion.DepartamentoId);
-                    cmd.Parameters.AddWithValue("@comuna_id", depto.direccion.ComunaId);
+                    cmd.Parameters.AddWithValue("@nombre_calle", depto.nombreCalle);
+                    cmd.Parameters.AddWithValue("@numero_calle", depto.numeroCalle);
+                    cmd.Parameters.AddWithValue("@numero_depto", depto.numeroDepartamento);
+                    cmd.Parameters.AddWithValue("@departamento_id", depto.DepartamentoId);
+                    cmd.Parameters.AddWithValue("@comuna_id", depto.ComunaId);
                     conn.Open();
                     retorno = cmd.ExecuteNonQuery();
                     conn.Close();

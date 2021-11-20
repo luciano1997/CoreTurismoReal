@@ -15,5 +15,7 @@ namespace TurismoReal.Models
         public DateTime fechaCreacion { get; set; }
         public int ValorReserva { get; set; }
         public int EstadoReserva { get; set; }
+        public int departamentoId { get; set; }
+        public int usuariosId { get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace TurismoReal.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DepartamentoController : ControllerBase
     {
         private readonly DepartamentoContext _departamentoContext;
@@ -74,17 +75,17 @@ namespace TurismoReal.Controllers
         public ActionResult PostDepartamento([FromBody] DepartamentoViewModel departamento)
         {
             var result = _departamentoContext.InsertDepartamento(departamento);
-            _direccionContext.InsertDireccion(departamento);
+            var resultDireccion = _direccionContext.InsertDireccion(departamento);
             if (departamento.imagenes.Any())
             {
                 foreach (var item in departamento.imagenes)
                 {
-                   _departamentoContext.InsertDepartamentoImagenesById(departamento.id, item);
+                   _departamentoContext.InsertDepartamentoImagenesById(departamento.DepartamentoId, item);
                    
                 }
             }
             
-           if (result >0)
+           if (result >0 && resultDireccion > 0)
             {
                 return Ok(result);
             }
@@ -138,7 +139,7 @@ namespace TurismoReal.Controllers
         [HttpDelete("DeleteDepartamentoById/{id}")]
         public IActionResult DeleteDepartamentoById(int id)
         {
-            var result = _departamentoContext.DeleteDepartamento(id);
+            var result = _departamentoContext.DeleteDepartamentoById(id);
 
             if (result > 0)
             {
