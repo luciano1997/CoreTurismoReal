@@ -35,7 +35,8 @@ namespace TurismoReal.Context.Departamento
                     SqlCommand cmd = new SqlCommand("select dep.*, dir.nombre_calle, dir.numero_calle, dir.numero_depto, c.nombre_comuna, r.nombre_region from departamento dep" +
                                                     " inner join direccion dir on dep.id = dir.departamento_id" +
                                                     " inner join comuna c on c.id = dir.comuna_id" +
-                                                    " inner join region r on r.id = c.region_id", conn);
+                                                    " inner join region r on r.id = c.region_id" +
+                                                    " where dep.disp_depto = 1", conn);
                     cmd.CommandType = CommandType.Text;
                     using (var reader = cmd.ExecuteReader())
                     {
