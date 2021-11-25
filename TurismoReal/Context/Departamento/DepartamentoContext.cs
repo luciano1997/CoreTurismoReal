@@ -290,7 +290,7 @@ namespace TurismoReal.Context.Departamento
                         " cantidad_dormitorios = @cantidadDormitorios , cantidad_banos = @cantidadBaños, " +
                         " valor_arriendo = @valorArriendo, disp_depto=@estado,  descripcion = @descripcion where id= @id;", conn);
                     cmd.CommandType = CommandType.Text;
-                    cmd.Parameters.AddWithValue("@id", depto.estado);
+                    cmd.Parameters.AddWithValue("@id", depto.id);
                     cmd.Parameters.AddWithValue("@cantidadDormitorios", depto.cantidadDormitorios);
                     cmd.Parameters.AddWithValue("@cantidadBaños ", depto.cantidadBaños);
                     cmd.Parameters.AddWithValue("@valorArriendo", depto.valorArriendo);
