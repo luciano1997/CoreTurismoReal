@@ -49,6 +49,29 @@ namespace TurismoReal.Controllers
             
         }
 
+        [HttpGet("GetDepartamentosDisponibles")]
+        public ActionResult<List<DepartamentoViewModel>> GetDepartamentosDisponibles()
+        {
+            IList<DepartamentoViewModel> deptos = new List<DepartamentoViewModel>();
+            deptos = _departamentoContext.selectDeptosDisponibles();
+
+            foreach (var item in deptos)
+            {
+                item.imagenes = _departamentoContext.selectDepartamentoImagenesById(item.id);
+                item.direccion = _direccionContext.selectDireccionById(item.id);
+            }
+
+            if (deptos.Any())
+            {
+                return Ok(deptos);
+            }
+            else
+            {
+                return BadRequest(new General.Retorno() { Codigo = "er", Mensaje = "no hay departamentos disponibles" });
+            }
+
+        }
+
         [HttpGet("GetDepartamentoById/{id}")]
         public ActionResult<List<DepartamentoViewModel>> GetDepartamentoById(int id)
         {

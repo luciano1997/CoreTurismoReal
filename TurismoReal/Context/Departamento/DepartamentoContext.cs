@@ -79,6 +79,65 @@ namespace TurismoReal.Context.Departamento
             return deptos;
         }
 
+        public IList<DepartamentoViewModel> selectDeptosDisponibles()
+        {
+
+            IList<DepartamentoViewModel> deptos = new List<DepartamentoViewModel>();
+            try
+            {
+
+                using (SqlConnection conn = GetConnection())
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("select dep.*, dir.nombre_calle, dir.numero_calle, dir.numero_depto, c.nombre_comuna, r.nombre_region from departamento dep" +
+                                                    " inner join direccion dir on dep.id = dir.departamento_id" +
+                                                    " inner join comuna c on c.id = dir.comuna_id" +
+                                                    " inner join region r on r.id = c.region_id " +
+                                                    " where dep.disp_depto = 1;", conn);
+                    cmd.CommandType = CommandType.Text;
+                    using (var reader = cmd.ExecuteReader())
+                    {
+
+                        while (reader.Read())
+                        {
+                            deptos.Add(new DepartamentoViewModel()
+                            {
+
+                                id = new Functions().ReaderToValue<int>(reader["id"]),
+                                cantidadDormitorios = new Functions().ReaderToValue<int>(reader["cantidad_dormitorios"]),
+                                cantidadBanos = new Functions().ReaderToValue<int>(reader["cantidad_banos"]),
+                                nombreCalle = new Functions().ReaderToValue<string>(reader["nombre_calle"]),
+                                numeroCalle = new Functions().ReaderToValue<int>(reader["numero_calle"]),
+                                numeroDepartamento = new Functions().ReaderToValue<int>(reader["numero_calle"]),
+                                Comuna = new Functions().ReaderToValue<string>(reader["nombre_comuna"]),
+                                Region = new Functions().ReaderToValue<string>(reader["nombre_region"]),
+                                valorArriendo = new Functions().ReaderToValue<int>(reader["valor_arriendo"]),
+                                estado = new Functions().ReaderToValue<int>(reader["disp_depto"]),
+                                descripcion = new Functions().ReaderToValue<string>(reader["descripcion"])
+                            });
+                        }
+
+                    }
+                    conn.Close();
+
+
+                }
+            }
+            catch (Exception e)
+            {
+                deptos = new List<DepartamentoViewModel>();
+                deptos.Add(
+                    new DepartamentoViewModel()
+                    {
+                        retorno = new General.Retorno() { Codigo = "ex", Mensaje = e.Message.ToString() }
+                    });
+
+            };
+
+            return deptos;
+        }
+
         // ******************************** SELECT BY ID ************************
 
 
