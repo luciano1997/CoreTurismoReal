@@ -105,6 +105,7 @@ namespace TurismoReal.Controllers
         public ActionResult PostDepartamentoImagen([FromBody] DepartamentoImagen departamento)
         {
             var result = _departamentoContext.InsertDepartamentoImagenesById(departamento.idDepartamento, departamento.imagenesUrl);
+            
 
             if (result > 0)
             {
@@ -125,8 +126,9 @@ namespace TurismoReal.Controllers
         public IActionResult PutDepartamentoById([FromBody] DepartamentoViewModel departamento)
         {
             var result = _departamentoContext.UpdateDepartamentoById(departamento);
+            var resultDireccion = _direccionContext.UpdateDireccionDepartamentoById(departamento);
 
-            if (result > 0 )
+            if (result > 0 && resultDireccion > 0)
             {
                 return Ok(result);
             }
@@ -135,12 +137,13 @@ namespace TurismoReal.Controllers
                 return BadRequest(new General.Retorno() { Codigo = "er", Mensaje = "No se pudo actualizar el registro" });
             }
         }
-        [HttpPut("PutDepartamentoEstadoById")]
-        public IActionResult PutDepartamentoEstadoById([FromBody] DepartamentoViewModel departamento)
+        [HttpPut("PutDepartamentoEstadoById/{íd}/{estado}")]
+        public IActionResult PutDepartamentoEstadoById(int id, int estado)
         {
-            var result = _departamentoContext.UpdateDepartamentoEstadoById(departamento);
+            var result = _departamentoContext.UpdateDepartamentoEstadoById(id, estado);
+           
 
-            if (result > 0)
+            if (result > 0 )
             {
                 return Ok(result);
             }

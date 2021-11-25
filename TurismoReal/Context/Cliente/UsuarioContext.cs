@@ -249,7 +249,6 @@ namespace TurismoReal.Context.Usuario
                     cmd.Parameters.AddWithValue("rut", usuario.rut);
                     cmd.Parameters.AddWithValue("telefono", usuario.telefono);
                     cmd.Parameters.AddWithValue("correo", usuario.correo);
-                    cmd.Parameters.AddWithValue("direccion", usuario.direccion);
                     cmd.Parameters.AddWithValue("tipo_usuario", usuario.tipoUsuario);
                     cmd.Parameters.AddWithValue("password", usuario.password);
 

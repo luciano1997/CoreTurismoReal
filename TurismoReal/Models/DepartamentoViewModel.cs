@@ -15,7 +15,7 @@ namespace TurismoReal.Models
         public int cantidadBaños { get; set; }
         public int valorArriendo { get; set; }
         public string descripcion { get; set; }
-        public string estado { get; set; }
+        public int estado { get; set; }
         public string nombreCalle { get; set; }
         public int numeroCalle { get; set; }
         public int numeroDepartamento { get; set; }

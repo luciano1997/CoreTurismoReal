@@ -72,44 +72,44 @@ namespace TurismoReal.Controllers
             //_logger.LogInformation($"User [{request.UserName}] logged in the system.");
             return Ok(token);
         }
-        [AllowAnonymous]
-        [HttpPost("loginByKey")]
-        public ActionResult LoginByKey([FromBody] LoginRequest Usuario)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
+        //[AllowAnonymous]
+        //[HttpPost("loginByKey")]
+        //public ActionResult LoginByKey([FromBody] LoginRequest Usuario)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            int valid = _userManager.GetIdTiendaToken(Usuario.IdUsuario, Usuario.Password);
+        //    int valid = _userManager.GetIdTiendaToken(Usuario.IdUsuario, Usuario.Password);
 
-            //if( Usuario == new LoginRequest())
-            //{
-            //    return Unauthorized();
-            //}
+        //    //if( Usuario == new LoginRequest())
+        //    //{
+        //    //    return Unauthorized();
+        //    //}
 
-            if (valid <= 0)
-            {
-                return BadRequest();
-            }
+        //    if (valid <= 0)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            //_loggerManager.LogInfo(string.Format("Usuario {0} logeado", request.UserName));
-            //var role = _userService.GetUserRole(request.UserName);
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.Name, Usuario.Nombre),
-                new Claim(ClaimTypes.Role, Usuario.Tipo),
-            };
+        //    //_loggerManager.LogInfo(string.Format("Usuario {0} logeado", request.UserName));
+        //    //var role = _userService.GetUserRole(request.UserName);
+        //    var claims = new[]
+        //    {
+        //        new Claim(ClaimTypes.Name, Usuario.Nombre),
+        //        new Claim(ClaimTypes.Role, Usuario.Tipo),
+        //    };
 
-            var jwtResult = _jwtAuthManager.GenerateTokens(Usuario.Nombre, claims, DateTime.Now);
+        //    var jwtResult = _jwtAuthManager.GenerateTokens(Usuario.Nombre, claims, DateTime.Now);
 
-            General.Token token = new General.Token();
+        //    General.Token token = new General.Token();
 
-            token.acces_token = jwtResult.AccessToken;
-            token.refresh_token = jwtResult.RefreshToken;
-            //_logger.LogInformation($"User [{request.UserName}] logged in the system.");
-            return Ok(token);
-        }
+        //    token.acces_token = jwtResult.AccessToken;
+        //    token.refresh_token = jwtResult.RefreshToken;
+        //    //_logger.LogInformation($"User [{request.UserName}] logged in the system.");
+        //    return Ok(token);
+        //}
 
         [AllowAnonymous]
         [HttpGet("GetUsuario/{usuario}")]

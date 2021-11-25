@@ -142,7 +142,55 @@ namespace TurismoReal.Context.Direccion
             return retorno;
         }
 
+        public int UpdateDireccionDepartamentoById(DepartamentoViewModel depto)
+        {
+            int retorno = 0;
+            try
+            {
+
+                using (SqlConnection conn = GetConnection())
+                {
+
+
+                    SqlCommand cmd = new SqlCommand("update direccion set " +
+                        " nombre_calle = @nombre_calle , numero_calle = @numero_calle, " +
+                        " numero_depto = @numero_depto, departamento_id=@departamento_id,  comuna_id = @comuna_id where id= @id;", conn);
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@id", depto.id);
+                    cmd.Parameters.AddWithValue("@nombre_calle", depto.nombreCalle);
+                    cmd.Parameters.AddWithValue("@numero_calle ", depto.numeroCalle);
+                    cmd.Parameters.AddWithValue("@numero_depto", depto.numeroDepartamento);
+                    cmd.Parameters.AddWithValue("@departamento_id", depto.DepartamentoId);
+                    cmd.Parameters.AddWithValue("@comuna_id", depto.ComunaId);
+
+                    conn.Open();
+                    retorno = cmd.ExecuteNonQuery();
+                    conn.Close();
+
+                    if (retorno.Equals(1))
+                    {
+                        depto.retorno = new General.Retorno() { Codigo = "ok", Mensaje = "registro almacenado con exito" };
+                    }
+                    else
+                    {
+                        depto.retorno = new General.Retorno() { Codigo = "er", Mensaje = "Ha ocurrido un error al almacenar el registro" };
+                    }
+
+
+
+                }
+            }
+            catch (Exception e)
+            {
+
+                retorno = 0;
+                depto.retorno = new General.Retorno() { Codigo = "ex", Mensaje = e.Message.ToString() };
+            }
+            return retorno;
+        }
+
         #endregion
+
 
 
     }

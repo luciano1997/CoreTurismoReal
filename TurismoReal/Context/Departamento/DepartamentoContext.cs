@@ -55,7 +55,7 @@ namespace TurismoReal.Context.Departamento
                                 Comuna = new Functions().ReaderToValue<string>(reader["nombre_comuna"]),
                                 Region = new Functions().ReaderToValue<string>(reader["nombre_region"]),
                                 valorArriendo = new Functions().ReaderToValue<int>(reader["valor_arriendo"]),
-                                estado = new Functions().ReaderToValue<string>(reader["disp_depto"]),
+                                estado = new Functions().ReaderToValue<int>(reader["disp_depto"]),
                                 descripcion = new Functions().ReaderToValue<string>(reader["descripcion"])
                             });
                         }
@@ -117,7 +117,7 @@ namespace TurismoReal.Context.Departamento
                                 Comuna = new Functions().ReaderToValue<string>(reader["nombre_comuna"]),
                                 Region = new Functions().ReaderToValue<string>(reader["nombre_region"]),
                                 valorArriendo = new Functions().ReaderToValue<int>(reader["valor_arriendo"]),
-                                estado = new Functions().ReaderToValue<string>(reader["disp_depto"]),
+                                estado = new Functions().ReaderToValue<int>(reader["disp_depto"]),
                                 descripcion = new Functions().ReaderToValue<string>(reader["descripcion"])
 
                             };
@@ -323,7 +323,7 @@ namespace TurismoReal.Context.Departamento
             return retorno;
         }
 
-        public int UpdateDepartamentoEstadoById(DepartamentoViewModel depto)
+        public int UpdateDepartamentoEstadoById(int id, int estado)
         {
             int retorno = 0;
             try
@@ -335,20 +335,13 @@ namespace TurismoReal.Context.Departamento
 
                     SqlCommand cmd = new SqlCommand("update departamento set disp_depto=@estado where id= @id;", conn);
                     cmd.CommandType = CommandType.Text;
-                    cmd.Parameters.AddWithValue("@id", depto.id);
-                    cmd.Parameters.AddWithValue("@estado", depto.estado);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.Parameters.AddWithValue("@estado", estado);
                     conn.Open();
                     retorno = cmd.ExecuteNonQuery();
                     conn.Close();
 
-                    if (retorno.Equals(1))
-                    {
-                        depto.retorno = new General.Retorno() { Codigo = "ok", Mensaje = "registro Actualizado con exito" };
-                    }
-                    else
-                    {
-                        depto.retorno = new General.Retorno() { Codigo = "er", Mensaje = "Ha ocurrido un error al Actualizado el registro" };
-                    }
+                   
 
 
 
@@ -358,7 +351,7 @@ namespace TurismoReal.Context.Departamento
             {
 
                 retorno = 0;
-                depto.retorno = new General.Retorno() { Codigo = "ex", Mensaje = e.Message.ToString() };
+              
             }
             return retorno;
         }
