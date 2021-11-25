@@ -48,7 +48,7 @@ namespace TurismoReal.Context.Departamento
 
                                 id = new Functions().ReaderToValue<int>(reader["id"]),
                                 cantidadDormitorios = new Functions().ReaderToValue<int>(reader["cantidad_dormitorios"]),
-                                cantidadBaños = new Functions().ReaderToValue<int>(reader["cantidad_banos"]),
+                                cantidadBanos = new Functions().ReaderToValue<int>(reader["cantidad_banos"]),
                                 nombreCalle = new Functions().ReaderToValue<string>(reader["nombre_calle"]),
                                 numeroCalle = new Functions().ReaderToValue<int>(reader["numero_calle"]),
                                 numeroDepartamento = new Functions().ReaderToValue<int>(reader["numero_calle"]),
@@ -110,7 +110,7 @@ namespace TurismoReal.Context.Departamento
 
                                 id = new Functions().ReaderToValue<int>(reader["id"]),
                                 cantidadDormitorios = new Functions().ReaderToValue<int>(reader["cantidad_dormitorios"]),
-                                cantidadBaños = new Functions().ReaderToValue<int>(reader["cantidad_banos"]),
+                                cantidadBanos = new Functions().ReaderToValue<int>(reader["cantidad_banos"]),
                                 nombreCalle = new Functions().ReaderToValue<string>(reader["nombre_calle"]),
                                 numeroCalle = new Functions().ReaderToValue<int>(reader["numero_calle"]),
                                 numeroDepartamento = new Functions().ReaderToValue<int>(reader["numero_depto"]),
@@ -244,7 +244,7 @@ namespace TurismoReal.Context.Departamento
                     SqlCommand cmd = new SqlCommand("insert into departamento (cantidad_dormitorios, cantidad_banos, valor_arriendo, disp_depto, descripcion) values (@dormitorios, @banos, @valor, @disp_depto, @descripcion);", conn);
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@dormitorios", depto.estado);
-                    cmd.Parameters.AddWithValue("@banos", depto.cantidadBaños);
+                    cmd.Parameters.AddWithValue("@banos", depto.cantidadBanos);
                     cmd.Parameters.AddWithValue("@valor", depto.valorArriendo);
                     cmd.Parameters.AddWithValue("@disp_depto", depto.estado);
                     cmd.Parameters.AddWithValue("@descripcion", depto.descripcion);
@@ -292,7 +292,7 @@ namespace TurismoReal.Context.Departamento
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@id", depto.id);
                     cmd.Parameters.AddWithValue("@cantidadDormitorios", depto.cantidadDormitorios);
-                    cmd.Parameters.AddWithValue("@cantidadBaños ", depto.cantidadBaños);
+                    cmd.Parameters.AddWithValue("@cantidadBaños ", depto.cantidadBanos);
                     cmd.Parameters.AddWithValue("@valorArriendo", depto.valorArriendo);
                     cmd.Parameters.AddWithValue("@estado", depto.estado);
                     cmd.Parameters.AddWithValue("@descripcion", depto.descripcion);

@@ -12,7 +12,7 @@ namespace TurismoReal.Models
         public int id { get; set; }
         
         public int cantidadDormitorios { get; set; }
-        public int cantidadBaños { get; set; }
+        public int cantidadBanos { get; set; }
         public int valorArriendo { get; set; }
         public string descripcion { get; set; }
         public int estado { get; set; }
