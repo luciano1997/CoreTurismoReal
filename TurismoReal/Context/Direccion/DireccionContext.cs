@@ -154,13 +154,13 @@ namespace TurismoReal.Context.Direccion
 
                     SqlCommand cmd = new SqlCommand("update direccion set " +
                         " nombre_calle = @nombre_calle , numero_calle = @numero_calle, " +
-                        " numero_depto = @numero_depto, departamento_id=@departamento_id,  comuna_id = @comuna_id where id= @id;", conn);
+                        " numero_depto = @numero_depto, departamento_id=@departamento_id,  comuna_id = @comuna_id where departamento_id= @id;", conn);
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@id", depto.id);
                     cmd.Parameters.AddWithValue("@nombre_calle", depto.nombreCalle);
                     cmd.Parameters.AddWithValue("@numero_calle ", depto.numeroCalle);
                     cmd.Parameters.AddWithValue("@numero_depto", depto.numeroDepartamento);
-                    cmd.Parameters.AddWithValue("@departamento_id", depto.DepartamentoId);
+                    cmd.Parameters.AddWithValue("@departamento_id", depto.id);
                     cmd.Parameters.AddWithValue("@comuna_id", depto.ComunaId);
 
                     conn.Open();
