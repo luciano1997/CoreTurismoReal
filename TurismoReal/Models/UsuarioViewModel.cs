@@ -24,7 +24,7 @@ namespace TurismoReal.Models
         public int telefono { get; set; }
         [MaxLength(40)]
         public string correo { get; set; }
-        public string direccion { get; set; }
+       
         [Required]
         [MaxLength(3)]
         public string tipoUsuario { get; set; }
@@ -32,5 +32,6 @@ namespace TurismoReal.Models
         [MaxLength(20)]
         public string password { get; set; }
 
+        public int vigente { get; set; }
     }
 }
