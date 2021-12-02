@@ -28,7 +28,7 @@ namespace TurismoReal.Models
         [Required]
         [MaxLength(3)]
         public string tipoUsuario { get; set; }
-        public string vigente { get; set; }
+       
         [MaxLength(20)]
         public string password { get; set; }
 
