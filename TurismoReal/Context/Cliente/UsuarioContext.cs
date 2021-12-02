@@ -236,9 +236,9 @@ namespace TurismoReal.Context.Usuario
                 {
 
 
-                    SqlCommand cmd = new SqlCommand("INSERT INTO usuarios (nombres ,apellido_paterno,apellido_materno ,rut ,telefono ,correo ,tipo_usuario ,password)" +
+                    SqlCommand cmd = new SqlCommand("INSERT INTO usuarios (nombres ,apellido_paterno,apellido_materno ,rut ,telefono ,correo ,tipo_usuario ,password, vigente)" +
                         " VALUES " +
-                        "(@nombres, @apellido_paterno, @apellido_paterno, @rut, @telefono, @correo, @tipo_usuario, @password); ", conn);
+                        "(@nombres, @apellido_paterno, @apellido_materno, @rut, @telefono, @correo, @tipo_usuario, @password, @vigente); ", conn);
 
 
 
@@ -251,7 +251,7 @@ namespace TurismoReal.Context.Usuario
                     cmd.Parameters.AddWithValue("correo", usuario.correo);
                     cmd.Parameters.AddWithValue("tipo_usuario", usuario.tipoUsuario);
                     cmd.Parameters.AddWithValue("password", usuario.password);
-
+                    cmd.Parameters.AddWithValue("vigente", usuario.vigente);
                     conn.Open();
                     retorno = cmd.ExecuteNonQuery();
                     conn.Close();
