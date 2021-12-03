@@ -12,7 +12,7 @@ namespace TurismoReal.Models
 
         [Key]
         public int  id { get; set; }
-        [Required]
+        
         [MaxLength(30)]
         public string nombres { get; set; }
         [MaxLength(20)]
@@ -25,7 +25,7 @@ namespace TurismoReal.Models
         [MaxLength(40)]
         public string correo { get; set; }
        
-        [Required]
+        
         [MaxLength(3)]
         public string tipoUsuario { get; set; }
        
