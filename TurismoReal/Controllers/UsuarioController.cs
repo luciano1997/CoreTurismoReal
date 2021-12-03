@@ -111,6 +111,26 @@ namespace TurismoReal.Controllers
 
 
         }
+        [HttpPut("PutUsuarioEstadoById")]
+        public ActionResult PutUsuarioEstadoById([FromBody] UsuarioViewModel usuario)
+        {
+            var result = _usuarioContext.UpdateUsuarioEstadoById(usuario);
+
+            if (result > 0)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(new General.Retorno()
+                {
+                    Codigo = "er",
+                    Mensaje = "error al insertar"
+                });
+            }
+
+
+        }
 
 
 

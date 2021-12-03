@@ -50,7 +50,8 @@ namespace TurismoReal.Context.Usuario
                                 telefono = new Functions().ReaderToValue<int>(reader["telefono"]),
                                 correo = new Functions().ReaderToValue<string>(reader["correo"]),
                                 tipoUsuario = new Functions().ReaderToValue<string>(reader["tipo_usuario"]),
-                                password = new Functions().ReaderToValue<string>(reader["password"])
+                                password = new Functions().ReaderToValue<string>(reader["password"]),
+                                vigente = new Functions().ReaderToValue<int>(reader["vigente"]),
                             });
                         }
 
@@ -334,7 +335,49 @@ namespace TurismoReal.Context.Usuario
             return retorno;
         }
 
+        public int UpdateUsuarioEstadoById(UsuarioViewModel usuario)
+        {
+            int retorno = 0;
+            try
+            {
 
+                using (SqlConnection conn = GetConnection())
+                {
+
+
+                    SqlCommand cmd = new SqlCommand("Update usuarios set vigente=@vigente where id = @id ", conn);
+
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("id", usuario.id);
+                    cmd.Parameters.AddWithValue("vigente", usuario.vigente);
+
+
+
+                    conn.Open();
+                    retorno = cmd.ExecuteNonQuery();
+                    conn.Close();
+
+                    if (retorno.Equals(1))
+                    {
+                        usuario.retorno = new General.Retorno() { Codigo = "ok", Mensaje = "registro Actualizado con exito" };
+                    }
+                    else
+                    {
+                        usuario.retorno = new General.Retorno() { Codigo = "er", Mensaje = "Ha ocurrido un error al almacenar el registro" };
+                    }
+
+
+
+                }
+            }
+            catch (Exception e)
+            {
+
+                retorno = 0;
+                usuario.retorno = new General.Retorno() { Codigo = "ex", Mensaje = e.Message.ToString() };
+            }
+            return retorno;
+        }
 
 
         #endregion
