@@ -91,8 +91,8 @@ namespace TurismoReal.Controllers
 
         }
 
-        [HttpPut("PutUsuario")]
-        public ActionResult PutUsuario([FromBody] UsuarioViewModel usuario)
+        [HttpPut("PutUsuarioById")]
+        public ActionResult PutUsuarioById([FromBody] UsuarioViewModel usuario)
         {
             var result = _usuarioContext.UpdateUsuarioById(usuario);
 
