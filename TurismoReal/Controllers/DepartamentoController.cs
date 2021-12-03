@@ -160,10 +160,10 @@ namespace TurismoReal.Controllers
                 return BadRequest(new General.Retorno() { Codigo = "er", Mensaje = "No se pudo actualizar el registro" });
             }
         }
-        [HttpPut("PutDepartamentoEstadoById/{íd}/{estado}")]
-        public IActionResult PutDepartamentoEstadoById(int id, int estado)
+        [HttpPut("PutDepartamentoEstadoById")]
+        public IActionResult PutDepartamentoEstadoById([FromBody] DepartamentoViewModel departamento)
         {
-            var result = _departamentoContext.UpdateDepartamentoEstadoById(id, estado);
+            var result = _departamentoContext.UpdateDepartamentoEstadoById(departamento.id, departamento.estado);
            
 
             if (result > 0 )
