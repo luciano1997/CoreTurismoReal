@@ -298,7 +298,7 @@ namespace TurismoReal.Context.Usuario
 
                     SqlCommand cmd = new SqlCommand("Update usuarios set nombres= @nombres, apellido_paterno = @apellido_paterno,   " +
                                                      "apellido_materno = @apellido_materno, rut = @rut, telefono = @telefono, " +
-                                                     "correo = @correo, tipo_usuario = @tipo_usuario where id = @id " , conn);
+                                                     "correo = @correo, tipo_usuario = @tipo_usuario, password=@password, vigente =@vigente where id = @id " , conn);
 
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("id", usuario.id);
@@ -309,7 +309,8 @@ namespace TurismoReal.Context.Usuario
                     cmd.Parameters.AddWithValue("telefono", usuario.telefono);
                     cmd.Parameters.AddWithValue("correo", usuario.correo);
                     cmd.Parameters.AddWithValue("tipo_usuario", usuario.tipoUsuario);
-                    
+                    cmd.Parameters.AddWithValue("password", usuario.password);
+                    cmd.Parameters.AddWithValue("vigente", usuario.vigente);
 
                     conn.Open();
                     retorno = cmd.ExecuteNonQuery();
