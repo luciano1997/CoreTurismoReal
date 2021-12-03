@@ -197,7 +197,8 @@ namespace TurismoReal.Context.Usuario
                                 telefono = new Functions().ReaderToValue<int>(reader["telefono"]),
                                 rut = new Functions().ReaderToValue<string>(reader["rut"]),
                                 correo = new Functions().ReaderToValue<string>(reader["correo"]),
-                                tipoUsuario = new Functions().ReaderToValue<string>(reader["tipo_usuario"])
+                                tipoUsuario = new Functions().ReaderToValue<string>(reader["tipo_usuario"]),
+                                vigente = new Functions().ReaderToValue<int>(reader["vigente"])
 
                             };
                         }
