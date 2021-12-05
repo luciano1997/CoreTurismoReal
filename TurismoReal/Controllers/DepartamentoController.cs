@@ -92,6 +92,25 @@ namespace TurismoReal.Controllers
             }
 
         }
+        [HttpGet("GetDepartamentoValorById/{id}")]
+        public ActionResult<List<DepartamentoViewModel>> GetDepartamentoValorById(int id)
+        {
+            DepartamentoViewModel depto = new DepartamentoViewModel();
+
+            depto = _departamentoContext.selectDeptoValorById(id);
+
+   
+
+            if (depto.valorArriendo > 0)
+            {
+                return Ok(depto);
+            }
+            else
+            {
+                return BadRequest(new General.Retorno() { Codigo = "er", Mensaje = "no hay departamentos disponibles" });
+            }
+
+        }
 
 
         [HttpPost("PostDepartamento")]

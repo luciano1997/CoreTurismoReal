@@ -203,6 +203,57 @@ namespace TurismoReal.Context.Departamento
             return depto;
         }
 
+        public DepartamentoViewModel selectDeptoValorById(int id)
+        {
+
+            DepartamentoViewModel depto = new DepartamentoViewModel();
+            try
+            {
+
+                using (SqlConnection conn = GetConnection())
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("select valor_arriendo from departamento where id = @id; ", conn);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.CommandType = CommandType.Text;
+                    using (var reader = cmd.ExecuteReader())
+                    {
+
+                        while (reader.Read())
+                        {
+                            depto = new DepartamentoViewModel()
+                            {
+
+                                
+                                valorArriendo = new Functions().ReaderToValue<int>(reader["valor_arriendo"]),
+                                
+
+                            };
+                        }
+
+                    }
+                    conn.Close();
+                    if (depto.id > 0)
+                    {
+                        depto.retorno = new General.Retorno() { Codigo = "ok", Mensaje = "" };
+                    }
+                    else
+                    {
+                        depto.retorno = new General.Retorno() { Codigo = "er", Mensaje = "Id no existe" };
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                depto = null;
+            };
+
+            return depto;
+        }
+
+
         //***** select departamento imagen ****
 
 
