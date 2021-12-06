@@ -46,7 +46,7 @@ namespace TurismoReal.Context.Reserva
                                 ValorReserva = new Functions().ReaderToValue<int>(reader["valor_reserva"]),
                                 EstadoReserva = new Functions().ReaderToValue<int>(reader["estado_reserva"]),
                                 departamentoId = new Functions().ReaderToValue<int>(reader["departamento_id"]),
-                                usuariosId = new Functions().ReaderToValue<int>(reader["usuario_id"])
+                                usuarioId = new Functions().ReaderToValue<int>(reader["usuario_id"])
 
                             });
                         }
@@ -101,7 +101,7 @@ namespace TurismoReal.Context.Reserva
                                 ValorReserva = new Functions().ReaderToValue<int>(reader["valor_reserva"]),
                                 EstadoReserva = new Functions().ReaderToValue<int>(reader["estado_reserva"]),
                                 departamentoId = new Functions().ReaderToValue<int>(reader["departamento_id"]),
-                                usuariosId = new Functions().ReaderToValue<int>(reader["usuario_id"])
+                                usuarioId = new Functions().ReaderToValue<int>(reader["usuario_id"])
 
                             };
                         }
@@ -129,7 +129,7 @@ namespace TurismoReal.Context.Reserva
 
 
 
-        public int InsertReserva(ReservaViewModel reserva)
+        public int InsertReserva(ReservaViewModel reserva, int valor)
         {
             int retorno = 0;
 
@@ -139,16 +139,16 @@ namespace TurismoReal.Context.Reserva
                 {
 
 
-                    SqlCommand cmd = new SqlCommand("INSERT INTO reservas (fecha_llegada , fecha_salida , fecha_creación , valor_reserva , estado_reserva , departamento_id " +
-                                     "  , usuarios_id) VALUES (@fecha_llegada, @fecha_salida , @fecha_creación , @valor_reserva ,@estado_reserva ,@departamento_id, @usuarios_id); ", conn);
+                    SqlCommand cmd = new SqlCommand("INSERT INTO reservas (fecha_llegada , fecha_salida , valor_reserva , estado_reserva , departamento_id " +
+                                     "  , usuarios_id) VALUES (@fecha_llegada, @fecha_salida , @valor_reserva ,@estado_reserva ,@departamento_id, @usuarios_id); ", conn);
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@fecha_llegada", reserva.fechaLlegada);
                     cmd.Parameters.AddWithValue("@fecha_salida", reserva.fechaSalida);
-                    cmd.Parameters.AddWithValue("@fecha_creación", reserva.fechaCreacion);
-                    cmd.Parameters.AddWithValue("@valor_reserva", reserva.ValorReserva);
-                    cmd.Parameters.AddWithValue("@estado_reserva", reserva.EstadoReserva);
+                   
+                    cmd.Parameters.AddWithValue("@valor_reserva", valor);
+                    cmd.Parameters.AddWithValue("@estado_reserva", 1);
                     cmd.Parameters.AddWithValue("@departamento_id", reserva.departamentoId);
-                    cmd.Parameters.AddWithValue("@usuarios_id", reserva.departamentoId);
+                    cmd.Parameters.AddWithValue("@usuarios_id", reserva.usuarioId);
 
                     conn.Open();
                     retorno = cmd.ExecuteNonQuery();
@@ -182,7 +182,7 @@ namespace TurismoReal.Context.Reserva
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@fecha_llegada", reserva.fechaLlegada);
                     cmd.Parameters.AddWithValue("@fecha_salida", reserva.fechaSalida);
-                    cmd.Parameters.AddWithValue("@fecha_creación", reserva.fechaCreacion);
+                   
                     cmd.Parameters.AddWithValue("@valor_reserva", reserva.ValorReserva);
                     cmd.Parameters.AddWithValue("@estado_reserva", reserva.EstadoReserva);
                     cmd.Parameters.AddWithValue("@departamento_id", reserva.departamentoId);

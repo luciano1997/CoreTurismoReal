@@ -12,10 +12,10 @@ namespace TurismoReal.Models
         public int id { get; set; }
         public DateTime fechaLlegada { get; set; }
         public DateTime fechaSalida { get; set; }
-        public DateTime fechaCreacion { get; set; }
+       
         public int ValorReserva { get; set; }
         public int EstadoReserva { get; set; }
         public int departamentoId { get; set; }
-        public int usuariosId { get; set; }
+        public int usuarioId { get; set; }
     }
 }
