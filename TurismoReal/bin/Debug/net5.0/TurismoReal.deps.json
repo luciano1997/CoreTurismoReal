@@ -36,6 +36,7 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.1",
           "Microsoft.AspNetCore.Authentication.OpenIdConnect": "5.0.1",
           "Microsoft.EntityFrameworkCore": "5.0.9",
+          "NLog": "4.7.12",
           "Swashbuckle.AspNetCore": "5.6.3",
           "System.Data.SqlClient": "4.8.2",
           "Microsoft.AspNetCore.Antiforgery": "5.0.0.0",
@@ -522,6 +523,17 @@
         "dependencies": {
           "System.Security.AccessControl": "4.7.0",
           "System.Security.Principal.Windows": "4.7.0"
+        }
+      },
+      "NLog/4.7.12": {
+        "runtime": {
+          "lib/netstandard2.0/NLog.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.7.12.301"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/NLog.dll": {}
         }
       },
       "runtime.native.System.Data.SqlClient.sni/4.7.0": {
@@ -2525,6 +2537,13 @@
       "sha512": "sha512-KSrRMb5vNi0CWSGG1++id2ZOs/1QhRqROt+qgbEAdQuGjGrFcl4AOl4/exGPUYz2wUnU42nvJqon1T3U0kPXLA==",
       "path": "microsoft.win32.registry/4.7.0",
       "hashPath": "microsoft.win32.registry.4.7.0.nupkg.sha512"
+    },
+    "NLog/4.7.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-cFe+YQVxghBt4hoB8IH+XVW/vyS6rWJPfWmm0rmgS/iaI3lzzFsGRzjw3VhByovLugw7Zp3kY7nVUWADCu6n2g==",
+      "path": "nlog/4.7.12",
+      "hashPath": "nlog.4.7.12.nupkg.sha512"
     },
     "runtime.native.System.Data.SqlClient.sni/4.7.0": {
       "type": "package",
